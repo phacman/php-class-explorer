@@ -20,7 +20,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testBaseCase()
+    public function testBaseCase(): void
     {
         $path = __DIR__.'/Fixtures/BaseCase.php';
         $class = new Explorer($path);
@@ -78,7 +78,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testFinalCase()
+    public function testFinalCase(): void
     {
         $path = __DIR__.'/Fixtures/ConsoleEvents.php';
         $class = new Explorer($path);
@@ -101,7 +101,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testAbstractCase()
+    public function testAbstractCase(): void
     {
         $path = __DIR__.'/Fixtures/ConsoleDescriptor.php';
         $class = new Explorer($path);
@@ -117,7 +117,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testInterfaceCase()
+    public function testInterfaceCase(): void
     {
         $path = __DIR__.'/Fixtures/OutputFormatterInterface.php';
         $class = new Explorer($path);
@@ -128,7 +128,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testTraitCase()
+    public function testTraitCase(): void
     {
         $path = __DIR__.'/Fixtures/TesterTrait.php';
         $class = new Explorer($path);
@@ -152,7 +152,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testEnumCase()
+    public function testEnumCase(): void
     {
         $path = __DIR__.'/Fixtures/ColorMode.php';
         $class = new Explorer($path);
@@ -172,7 +172,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testExtendsAndImplementsCase()
+    public function testExtendsAndImplementsCase(): void
     {
         $path = __DIR__.'/Fixtures/ExtendsAndImplements.php';
         $class = new Explorer($path);
@@ -183,7 +183,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testExtendsNoImplementsCase()
+    public function testExtendsNoImplementsCase(): void
     {
         $path = __DIR__.'/Fixtures/ExtendsNoImplements.php';
         $class = new Explorer($path);
@@ -194,7 +194,7 @@ class ExplorerCasesTest extends TestCase
     /**
      * @throws FileNotExistsException
      */
-    public function testImplementsNoExtendsCase()
+    public function testImplementsNoExtendsCase(): void
     {
         $path = __DIR__.'/Fixtures/ImplementsNoExtends.php';
         $class = new Explorer($path);
@@ -202,7 +202,7 @@ class ExplorerCasesTest extends TestCase
         $this->assertTrue((bool) \count($class->getImplements()));
     }
 
-    public function testExceptionCase()
+    public function testExceptionCase(): void
     {
         $this->expectException(FileNotExistsException::class);
         $this->expectExceptionMessage(Explorer::EXC_MESSAGE);

@@ -21,13 +21,21 @@ class Explorer implements ExplorerInterface
     const TYPE_INTERFACE = 'interface';
     const TYPE_TRAIT = 'trait';
     const TYPE_ENUM = 'enum';
+    /** @var array<string> */
     private array $main = [];
+    /** @var array<string> */
     private array $lines = [];
+    /** @var array<int<1, max>> */
     private array $atypical = [];
+    /** @var array<string> */
     private array $constants = [];
+    /** @var array<string> */
     private array $properties = [];
+    /** @var array<string> */
     private array $methods = [];
+    /** @var array<string> */
     private array $cases = [];
+    /** @var array<string> */
     private array $classChunks = [];
     private string $namespace = '';
     private string $classHead = '';
@@ -78,7 +86,7 @@ class Explorer implements ExplorerInterface
      */
     public function getClassName(): string
     {
-        return end($this->classChunks);
+        return (string) end($this->classChunks);
     }
 
     /**
@@ -105,12 +113,12 @@ class Explorer implements ExplorerInterface
      */
     public function getClassType(): string
     {
-        return current(\array_slice($this->classChunks, -2));
+        return (string) current(\array_slice($this->classChunks, -2));
     }
 
     /**
      * Import classes via "use";.
-     * @return array
+     * @return array<string>
      */
     public function getImports(): array
     {
@@ -143,7 +151,7 @@ class Explorer implements ExplorerInterface
 
     /**
      * What the class implements.
-     * @return array
+     * @return array<string>
      */
     public function getImplements(): array
     {
@@ -165,7 +173,7 @@ class Explorer implements ExplorerInterface
 
     /**
      * List of all class constants.
-     * @return array
+     * @return array<string>
      */
     public function getConstants(): array
     {
@@ -174,7 +182,7 @@ class Explorer implements ExplorerInterface
 
     /**
      * List of all class properties.
-     * @return array
+     * @return array<string>
      */
     public function getProperties(): array
     {
@@ -183,7 +191,7 @@ class Explorer implements ExplorerInterface
 
     /**
      * List of all cases for "enum" type.
-     * @return array
+     * @return array<string>
      */
     public function getEnumCases(): array
     {
@@ -192,7 +200,7 @@ class Explorer implements ExplorerInterface
 
     /**
      * Signatures of all class methods.
-     * @return array
+     * @return array<string>
      */
     public function getMethods(): array
     {
@@ -320,7 +328,7 @@ class Explorer implements ExplorerInterface
 
     /**
      * Result as an array.
-     * @return array
+     * @return array<string, string>
      */
     public function toArray(): array
     {
@@ -371,12 +379,12 @@ class Explorer implements ExplorerInterface
 
     /**
      * Convert "camelCase" to "snake_case".
-     * @param  string $string
+     * @param  string|null $string $string
      * @return string
      */
-    private function camelToSnake(string $string): string
+    private function camelToSnake(string|null $string): string
     {
-        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $string));
+        return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', (string) $string));
     }
 
     /**
@@ -386,11 +394,12 @@ class Explorer implements ExplorerInterface
      */
     protected function initMain(string $path): void
     {
-        $lines = file($path);
+        $lines = (array) file($path);
         $this->linesCount = \count($lines);
         $atypical = [];
 
         foreach ($lines as $line) {
+            $line = (string) $line;
             $trimmed = trim($line);
             if (0 == \strlen($trimmed)) {
                 continue;
@@ -409,7 +418,7 @@ class Explorer implements ExplorerInterface
             }
 
             if ($this->isClassSign($trimmed)) {
-                $atypical[] = trim(substr($trimmed, 0, strpos($trimmed, ' ')));
+                $atypical[] = trim(substr($trimmed, 0, (int) strpos($trimmed, ' ')));
             }
 
             $this->lines[] = $trimmed;
@@ -424,7 +433,7 @@ class Explorer implements ExplorerInterface
      */
     protected function initClassDetails(): void
     {
-        $class = end($this->main);
+        $class = (string) end($this->main);
         $class = trim($class, ' ;');
         $class = str_replace('  ', ' ', $class);
         $sharped = str_replace([' implements ', ' extends '], '#', $class);
@@ -450,7 +459,7 @@ class Explorer implements ExplorerInterface
                 }
                 $item = !str_contains($item, ' //')
                     ? $item
-                    : trim(substr($item, 0, strpos($item, '/')));
+                    : trim(substr($item, 0, (int) strpos($item, '/')));
 
                 $item = trim($item, ' ;');
                 $item = !str_ends_with($item, '[') ? $item : $item.'...]';

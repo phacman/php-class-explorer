@@ -13,6 +13,9 @@ namespace PhacMan\ClassExplorer\Contract;
 
 interface ConverterInterface
 {
+    /**
+     * @return array<string, string>
+     */
     public function toArray(): array;
 
     public function __toString(): string;
