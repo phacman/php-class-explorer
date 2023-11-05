@@ -14,7 +14,7 @@ namespace PhacMan\ClassExplorer;
 use PhacMan\ClassExplorer\Exception\FileNotExistsException;
 use ReflectionMethod;
 
-class Explorer
+class Explorer implements ExplorerInterface
 {
     const EXC_MESSAGE = 'There is no such file.';
     const TYPE_CLASS = 'class';
@@ -29,6 +29,7 @@ class Explorer
     private array $methods = [];
     private array $cases = [];
     private array $classChunks = [];
+    private string $namespace = '';
     private string $classHead = '';
     private string $classTail = '';
     private int $linesCount = 0;
@@ -68,18 +69,7 @@ class Explorer
      */
     public function getNamespace(): string
     {
-        $idx = null;
-
-        foreach ($this->main as $key => $value) {
-            if (str_contains($value, 'namespace ')) {
-                $idx = $key;
-                break;
-            }
-        }
-
-        return \is_int($idx)
-            ? trim(str_replace('namespace ', '', $this->main[$idx]))
-            : '';
+        return $this->namespace;
     }
 
     /**
@@ -209,6 +199,10 @@ class Explorer
         return $this->methods;
     }
 
+    /**
+     * Check whether a class is atypical.
+     * @return bool
+     */
     public function isAtypicalClass(): bool
     {
         $keys = array_keys($this->atypical);
@@ -355,7 +349,7 @@ class Explorer
      * Result as a string.
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $result = '';
         $items = $this->toArray();
@@ -403,7 +397,11 @@ class Explorer
             }
 
             if (preg_match('/[a-zA-Z]/', $line[0])) {
-                $this->main[] = str_replace([';'], '', $trimmed);
+                $trimmed = str_replace([';'], '', $trimmed);
+                if (str_starts_with($trimmed, 'namespace ')) {
+                    $this->namespace = str_replace('namespace ', '', $trimmed);
+                }
+                $this->main[] = $trimmed;
             }
 
             if ($this->isMethod($trimmed)) {
@@ -517,27 +515,9 @@ class Explorer
     protected function isMethod(string $line): bool
     {
         $trimmed = trim($line);
+        $hasFunction = str_starts_with($trimmed, 'function ')
+            || str_contains($trimmed, ' function ');
 
-        return match (true) {
-            str_starts_with($trimmed, 'abstract public function'),
-            str_starts_with($trimmed, 'abstract protected function'),
-            str_starts_with($trimmed, 'abstract private function'),
-            str_starts_with($trimmed, 'public function'),
-            str_starts_with($trimmed, 'public static function'),
-            str_starts_with($trimmed, 'public final function'),
-            str_starts_with($trimmed, 'public static final function'),
-            str_starts_with($trimmed, 'public final static function'),
-            str_starts_with($trimmed, 'protected function'),
-            str_starts_with($trimmed, 'protected static function'),
-            str_starts_with($trimmed, 'protected final function'),
-            str_starts_with($trimmed, 'protected static final function'),
-            str_starts_with($trimmed, 'protected final static function'),
-            str_starts_with($trimmed, 'private function'),
-            str_starts_with($trimmed, 'private static function'),
-            str_starts_with($trimmed, 'private final function'),
-            str_starts_with($trimmed, 'private static final function'),
-            str_starts_with($trimmed, 'private final static function') => true,
-            default => false
-        };
+        return $hasFunction && \in_array($trimmed[0], ['a', 'p', 'f', 's'], true);
     }
 }
