@@ -14,7 +14,7 @@ namespace PhacMan\ClassExplorer;
 use PhacMan\ClassExplorer\Exception\FileNotExistsException;
 use ReflectionMethod;
 
-class Explorer
+class Explorer implements ExplorerInterface
 {
     const EXC_MESSAGE = 'There is no such file.';
     const TYPE_CLASS = 'class';
@@ -349,7 +349,7 @@ class Explorer
      * Result as a string.
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $result = '';
         $items = $this->toArray();
