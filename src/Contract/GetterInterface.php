@@ -25,17 +25,35 @@ interface GetterInterface
 
     public function getClassType(): string;
 
+    /**
+     * @return array<string>
+     */
     public function getImports(): array;
 
     public function getExtends(): string;
 
+    /**
+     * @return array<string>
+     */
     public function getImplements(): array;
 
+    /**
+     * @return array<string>
+     */
     public function getConstants(): array;
 
+    /**
+     * @return array<string>
+     */
     public function getProperties(): array;
 
+    /**
+     * @return array<string>
+     */
     public function getEnumCases(): array;
 
+    /**
+     * @return array<string>
+     */
     public function getMethods(): array;
 }

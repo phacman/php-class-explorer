@@ -202,7 +202,7 @@ class ExplorerMethodsTest extends TestCase
         ];
     }
 
-    public function testToArray()
+    public function testToArray(): void
     {
         $path = __DIR__.'/Fixtures/ShortBaseCase.php';
         $class = new Explorer($path);
@@ -211,7 +211,7 @@ class ExplorerMethodsTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testToString()
+    public function testToString(): void
     {
         $path = __DIR__.'/Fixtures/ShortBaseCase.php';
         $class = new Explorer($path);
