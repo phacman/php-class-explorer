@@ -17,6 +17,17 @@ use PHPUnit\Framework\TestCase;
 class ExplorerMethodsTest extends TestCase
 {
     /**
+     * @covers \PhacMan\ClassExplorer\Explorer::isMethod
+     * @return void
+     */
+    public function testIsMethod()
+    {
+        $path = __DIR__.'/Fixtures/MethodsCase.php';
+        $class = new Explorer($path);
+        $this->assertCount(18, $class->getMethods());
+    }
+
+    /**
      * @covers \PhacMan\ClassExplorer\Explorer::isAtypicalClass
      * @dataProvider atypicalClassDataProvider
      * @param  string $class
